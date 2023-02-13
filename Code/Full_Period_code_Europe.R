@@ -66,42 +66,50 @@ plot2axis <- function(i, prueba){
 #Deaths vs Cases
 graficos = lapply(1:nrow(newCases),plot2axis, data2)
 grid.arrange(graficos[[1]], graficos[[2]], graficos[[3]], graficos[[4]],
-    graficos[[5]], graficos[[6]], graficos[[7]], graficos[[8]],
-    graficos[[9]],  
+    graficos[[5]], graficos[[6]], graficos[[7]], graficos[[8]], graficos[[9]], 
     ncol = 3 , nrow = 3)
 
 dev.off()
 jpeg(file = "Deaths_vs_cases_Europe.jpeg", height = 800, width = 1200)
 grid.arrange(graficos[[1]], graficos[[2]], graficos[[3]], graficos[[4]],
-    graficos[[5]], graficos[[6]], graficos[[7]], graficos[[8]],
-    graficos[[9]],  
+    graficos[[5]], graficos[[6]], graficos[[7]], graficos[[8]], graficos [[9]],
     ncol = 3 , nrow = 3)
 dev.off()
-
-rm(list = ls())
-setwd("..")
 
 ##################################
 #Evolution of vaccination in Europe
 ##################################
-#vacSpain <- colMeans(Vac)
-#for(i in 1:(length(vacSpain)-1)){
-#    if(vacSpain[i] > vacSpain[i+1]){
-#        vacSpain[i+1] <- vacSpain[i]}
-#}
-#dates <- as.Date(names(vacSpain))
-#variants <- factor(variants, labels = c("Original", "Alpha", "Delta", "Omicron"))
-#datVac <- data.frame(vacSpain, dates, variants)
-#
-#vacplot <- ggplot(datVac, aes(x = dates)) +
-#    theme_bw() +
-#    geom_line(aes(y = vacSpain, color = variants)) +
-#    xlab("Date") + 
-#    ylab("Vaccination rate %") + 
-#    scale_color_brewer(palette = "Dark2")
-#
-#jpeg(file = "Evolution_Vacciantion_Spain.jpeg", height = 800, width = 800)
-#vacplot
-#dev.off()
-#rm(list = ls())
-#setwd("..")
+
+
+Vac2 <- Vac
+fechas <- colnames(Vac2)
+fechas <- fechas[which(fechas =="2021-01-01"):which(fechas =="2021-12-31")]
+num <- length(fechas)
+paises <- rownames(Vac2)
+Vac2 <- Vac2[,fechas]
+VacRate <- c(Vac2[1,],Vac2[2,],Vac2[3,],Vac2[4,],Vac2[5,],Vac2[6,],Vac2[7,], Vac2[8,], Vac2[9,])
+dates <- rep(fechas,9)
+dates <- as.Date(dates)
+VacEurope <- data.frame(VacRate, dates)
+paisesVac <- c(
+    rep(paises[1], num), rep(paises[2], num), rep(paises[3], num), rep(paises[4], num),
+    rep(paises[5], num), rep(paises[6], num), rep(paises[7], num), rep(paises[8], num),
+    rep(paises[9], num))
+
+paises <- paisesVac
+VacEurope$Country <- paises
+
+jpeg(file = "Vaccination_Europe.jpeg", height = 800, width = 1200)
+ggplot(VacEurope, aes(dates)) +
+    theme_bw() +
+    geom_line(aes(y = VacRate, color = Country), linewidth = 2) +
+    xlab("Date") + 
+    ylab("Vaccination rate %") + 
+    theme(legend.position = "right", text = element_text(size = 20))
+dev.off()
+
+
+rm(list = ls())
+setwd("..")
+
+

@@ -35,11 +35,17 @@ source("GAM_Function.R")
 #Relation between transmission and temperature
 res_Rt <- GamModelCrossbasics(Rt, Temperature, Measures, Retail, 
     Work, Residential, Vac, variants)
-res_Rt_GAM <- round(res_Rt$Gam,3)
-res_Rt_COR <- round(res_Rt$Cor,3)
+
+#Relation between transmission and relative humidity
+res_hum <- GamModelCrossbasics_RH(Rt, RH, Measures, Retail, Work, 
+    Residential, Vac, variants)
+resRH_ini_Europe <- res_hum
+
+
+
 setwd("Data")
 res_ini_Europe <- res_Rt
-save(res_ini_Europe, file = "GAM_Europe_Initial.RData")
+save(res_ini_Europe, resRH_ini_Europe,  file = "GAM_Europe_Initial.RData")
 setwd("..")
 
 rm(list = ls())
@@ -61,11 +67,19 @@ source("GAM_Function.R")
 #Relation between transmission and temperature
 res_Rt <- GamModelCrossbasics(Rt, Temperature, Measures, Retail, Work, 
     Residential, Vac, variants)
-resultados_Rt_GAM <- round(res_Rt$Gam,3)
-resultados_Rt_COR <- round(res_Rt$Cor,3)
+
+
+#Relation between transmission and relative humidity
+res_hum <- GamModelCrossbasics_RH(Rt, RH, Measures, Retail, Work, 
+    Residential, Vac, variants)
+resRH_fin_Europe <- res_hum
+
+
+
 setwd("Data")
 res_fin_Europe <- res_Rt
-save(res_fin_Europe, file = "GAM_Europe_Final.RData")
+save(res_fin_Europe, resRH_fin_Europe, 
+    file = "GAM_Europe_Final.RData")
 setwd("..")
 
 rm(list = ls())
