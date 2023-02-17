@@ -14,52 +14,52 @@ require(RColorBrewer)
 require(gridExtra)
 require(oddsratio)
 require(dplyr)
-require(patchwork) # To display 2 charts together
+require(patchwork)
 require(hrbrthemes)
 require(forestplot)
 require(metafor)
 
 ####################
-## Initial Period
+## Period P1
 ####################
 
-#Load data
-#setwd("..") #Subir al directorio anterior
-load("Data/InitialPeriod_var_Spain.RData")
-#setwd("..")
-source("GAM_Function.R")
+#Load data and model functions
+load("Data/P1_Spain.RData")
+source("Code/GAM_Function.R")
+
 
 #########################
 # Apply GAM models
 #########################
+
 #Relation between transmission and temperature
-res_Rt <- GamModelCrossbasics(Rt, Temperature, Measures, Retail, 
-    Work, Residential, Vac, variants)
+res_P1_Temp_Spain <- GamModelCrossbasics(Re, Temperature, StringencyIndex, 
+    Retail, Work, Residential, Vac, variants)
 
 
 #Relation between transmission and relative humidity
-res_hum <- GamModelCrossbasics_RH(Rt, RH, Measures, Retail, Work, 
+res_P1_RH_Spain <- GamModelCrossbasics_RH(Re, RH, StringencyIndex, Retail, Work, 
     Residential, Vac, variants)
-resRH_ini_Spain <- res_hum
 
-
-
+#Save models results P1 adn data
 setwd("Data")
-res_ini_Spain <- res_Rt
-save(res_ini_Spain, resRH_ini_Spain,
-    file = "GAM_Spain_Initial.RData")
+save(res_P1_Temp_Spain, res_P1_RH_Spain,
+    file = "GAM_Spain_P1.RData")
 setwd("..")
 
+#Save tables models results P1
+setwd("Tables")
+write.csv(round(res_P1_Temp_Spain$Gam,3), file = "Results_P1_Temp_Spain.csv")
+write.csv(round(res_P1_RH_Spain$Gam,3), file = "Results_P1_RH_Spain.csv")
+setwd("..")
 rm(list = ls())
 
 #############################
 ### Final Period Analysis
 #############################
-#Load data
-#setwd("..") #Subir al directorio anterior
-load("Data/FinalPeriod_var_Spain.RData")
-#setwd("..")
-source("GAM_Function.R")
+#Load data and model functions
+load("Data/P2_Spain.RData")
+source("Code/GAM_Function.R")
 
 
 #########################
@@ -67,21 +67,25 @@ source("GAM_Function.R")
 #########################
 
 #Relation between transmission and temperature
-res_Rt <- GamModelCrossbasics(Rt, Temperature, Measures, Retail, Work, 
-    Residential, Vac, variants)
-res_fin_Spain <- res_Rt
+res_P2_Temp_Spain <- GamModelCrossbasics(Re, Temperature, StringencyIndex, 
+    Retail, Work, Residential, Vac, variants)
+
 
 #Relation between transmission and relative humidity
-res_hum <- GamModelCrossbasics_RH(Rt, RH, Measures, Retail, Work, 
+res_P2_RH_Spain <- GamModelCrossbasics_RH(Re, RH, StringencyIndex, Retail, Work, 
     Residential, Vac, variants)
-resRH_fin_Spain <- res_hum
 
-
-
+#Save models results P2 and data
 setwd("Data")
-save(res_fin_Spain, resRH_fin_Spain,
-    file = "GAM_Spain_Final.RData")
+save(res_P2_Temp_Spain, res_P2_RH_Spain,
+    file = "GAM_Spain_P2.RData")
 setwd("..")
 
+#Save tables models results P2
+setwd("Tables")
+write.csv(round(res_P2_Temp_Spain$Gam,3), file = "Results_P2_Temp_Spain.csv")
+write.csv(round(res_P2_RH_Spain$Gam,3), file = "Results_P2_RH_Spain.csv")
+setwd("..")
 rm(list = ls())
+
 

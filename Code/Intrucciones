@@ -1,5 +1,0 @@
-Este codigo contiene las variables una vez procesadas  para aplicarlo más rapidamente para el análisis y para crear los gráficos. 
-Para hacer cambios en las variables hay que usar los ficheros de datos contenidos en la carpeta Análisis -> Análisis General:
-
-SpanishComunnities_code.R
-World_code.R
