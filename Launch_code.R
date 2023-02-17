@@ -1,6 +1,11 @@
 ##################
 #Lauch all code
 ##################
+
+dir.create("Figures")
+dir.create("Supplementary_Figures")
+dir.create("Tables")
+
 #Spain
 system("Rscript Code/Full_Period_code_Spain.R")
 system("Rscript Code/Spain_models.R")
